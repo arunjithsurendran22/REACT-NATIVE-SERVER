@@ -32,7 +32,7 @@ mongoose
   });
 
 app.get('/', (req, res) => {
-    res.send('pong 🏓')
+    res.send('welcome node 🏓')
 })
 
 
