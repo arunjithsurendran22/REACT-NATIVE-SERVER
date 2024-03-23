@@ -40,8 +40,7 @@ app.get('/ping', (req, res) => {
 
 //ROUTING
 app.use("/api/v3/booking/admin", adminRoute);
-app.use("/api/v3/booking/user", userRoute);
-app.use(errorMiddleware);
+
 
 //Server connection
 const PORT = process.env.PORT || 3000;
