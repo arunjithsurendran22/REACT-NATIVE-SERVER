@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-
+import adminRoute from "./routes/admin.Route.js";
+import userRoute from "./routes/user.Route.js";
 
 dotenv.config();
 const app = express();
@@ -31,11 +32,12 @@ mongoose
     console.log(error, "database disconnected.....");
   });
 
-app.get('/', (req, res) => {
-    res.send('pong 🏓')
-})
+app.get("/", (req, res) => {
+  res.send("pong 🏓");
+});
 
-
+app.use("/api/v3/booking/admin", adminRoute);
+app.use("/api/v3/booking/user", userRoute);
 //Server connection
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

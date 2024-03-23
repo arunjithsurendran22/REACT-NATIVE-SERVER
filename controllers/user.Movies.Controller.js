@@ -65,6 +65,7 @@ const userGetCategoryMovies = async (req, res, next) => {
       return res.status(404).json({ message: "No movies found" });
     }
 
+    
     // Create an object to store movies grouped by category
     const moviesByCategory = {};
     // Iterate over the movies array
@@ -79,7 +80,9 @@ const userGetCategoryMovies = async (req, res, next) => {
         title: movie.title,
         description: movie.description,
         image: movie.image,
+        categoryId:movie.categoryId,
         categoryName: movie.categoryName,
+        subCategoryId:movie.subCategoryId,
         subCategory: movie.subCategory,
       });
     });

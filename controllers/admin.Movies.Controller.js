@@ -432,13 +432,15 @@ const updateMovie = async (req, res, next) => {
 
     const existingAdmin = await adminModel.findById(adminId);
 
+    // Check if existingAdmin is found
     if (!existingAdmin) {
       return res.status(404).json({ message: "Admin not found" });
     }
 
     // Find the movie to update
-    const movieToUpdate = existingAdmin.movies.id(movieId);
+    const movieToUpdate = existingAdmin.movies.find(movie => movie._id.toString() === movieId);
 
+    // Check if movieToUpdate is found
     if (!movieToUpdate) {
       return res.status(404).json({ message: "Movie not found" });
     }
@@ -450,15 +452,17 @@ const updateMovie = async (req, res, next) => {
     // If categoryId and subcategoryId are provided, update them
     if (categoryId && subcategoryId) {
       // Find the category by categoryId
-      const category = existingAdmin.category.id(categoryId);
+      const category = existingAdmin.category.find(cat => cat._id.toString() === categoryId);
 
+      // Check if category is found
       if (!category) {
         return res.status(404).json({ message: "Category not found" });
       }
 
       // Find the subcategory by subcategoryId
-      const subcategory = category.subCategories.id(subcategoryId);
+      const subcategory = category.subCategories.find(sub => sub._id.toString() === subcategoryId);
 
+      // Check if subcategory is found
       if (!subcategory) {
         return res.status(404).json({ message: "Subcategory not found" });
       }
@@ -468,6 +472,23 @@ const updateMovie = async (req, res, next) => {
       movieToUpdate.categoryName = category.title;
       movieToUpdate.subCategory = subcategory.title;
       movieToUpdate.subCategoryId = subcategoryId;
+    }
+
+    // Check if file is uploaded
+    if (req.file) {
+      // If a new image is uploaded, delete the old image from Cloudinary
+      if (movieToUpdate.image) {
+        // Extract the public ID of the old image from its URL
+        const publicId = movieToUpdate.image.split('/').pop().split('.')[0];
+        // Delete the old image from Cloudinary
+        await cloudinary.v2.uploader.destroy(publicId);
+      }
+
+      // Upload new image to Cloudinary
+      const { secure_url } = await cloudinary.v2.uploader.upload(req.file.path);
+
+      // Update movie's image URL
+      movieToUpdate.image = secure_url;
     }
 
     // Save the updated admin document
@@ -483,6 +504,7 @@ const updateMovie = async (req, res, next) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 // Delete movie endpoint
 const deleteMovie = async (req, res, next) => {
