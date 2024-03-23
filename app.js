@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-
+import adminRoute from "./routes/admin.Route.js";
 
 dotenv.config();
 const app = express();
@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
     res.send('pong 🏓')
 })
 
-
+app.use("/api/v3/booking/admin", adminRoute);
 
 //Server connection
 const PORT = process.env.PORT || 3000;
