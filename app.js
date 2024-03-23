@@ -33,7 +33,7 @@ mongoose
     console.log(error, "database disconnected.....");
   });
 
-app.get('/ping', (req, res) => {
+app.get('/', (req, res) => {
     res.send('pong 🏓')
 })
 
