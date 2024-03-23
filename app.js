@@ -3,9 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import adminRoute from "./routes/admin.Route.js";
-import errorMiddleware from "./middleware/error.Middleware.js";
-import userRoute from "./routes/user.Route.js"
+
 
 dotenv.config();
 const app = express();
