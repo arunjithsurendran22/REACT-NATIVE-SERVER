@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
     res.send('pong 🏓')
 })
 
-app.use("/api/v3/booking/admin", adminRoute);
+app.use("/", adminRoute);
 
 //Server connection
 const PORT = process.env.PORT || 3000;
